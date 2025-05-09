@@ -1,23 +1,21 @@
-import api from './api';
 
-export const getDonorProfile = async (userId) => {
-  const response = await api.get(`/donors/${userId}`);
-  return response.data;
-};
+import { db } from './firebaseConfig';
+import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { GeoFirestore } from 'geofirestore';
 
-export const updateDonorProfile = async (userId, data) => {
-  const response = await api.put(`/donors/${userId}`, data);
-  return response.data;
-};
+const geoFirestore = new GeoFirestore(db);
 
-export const getDonationHistory = async (userId) => {
-  const response = await api.get(`/donors/${userId}/history`);
-  return response.data;
+export const updateDonorProfile = async (uid, data) => {
+  const donorRef = doc(db, 'donors', uid);
+  await setDoc(donorRef, data, { merge: true });
 };
 
 export const getNearbyRequests = async (location) => {
-  const response = await api.get('/donors/nearby-requests', {
-    params: { lat: location.lat, lng: location.lng },
+  const geoCollection = geoFirestore.collection('requests');
+  const query = geoCollection.near({
+    center: new firebase.firestore.GeoPoint(location.lat, location.lng),
+    radius: 50, // 50 km radius
   });
-  return response.data;
+  const snapshot = await query.get();
+  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
