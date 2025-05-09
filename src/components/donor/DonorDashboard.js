@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import useGeolocation from '../../hooks/useGeolocation';
 import { getNearbyRequests } from '../../services/donorService';
-import '../../App.css';
+import '../App.css';
 import 'leaflet/dist/leaflet.css';
 
 const DonorDashboard = () => {
