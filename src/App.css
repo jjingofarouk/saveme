@@ -184,3 +184,13 @@ th, td {
   top: -5px;
   right: -5px;
 }
+
+.map-controls {
+  margin-bottom: 10px;
+}
+.map-controls label {
+  margin-right: 10px;
+}
+.map-controls select {
+  padding: 5px;
+}
