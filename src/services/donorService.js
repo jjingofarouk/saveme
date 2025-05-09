@@ -1,7 +1,8 @@
-import firebase from 'firebase/app';
+
 import { db } from './firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { GeoFirestore } from 'geofirestore';
+import { GeoPoint } from 'firebase/firestore';
 
 const geoFirestore = new GeoFirestore(db);
 
@@ -13,7 +14,7 @@ export const updateDonorProfile = async (uid, data) => {
 export const getNearbyRequests = async (location) => {
   const geoCollection = geoFirestore.collection('requests');
   const query = geoCollection.near({
-    center: new firebase.firestore.GeoPoint(location.lat, location.lng),
+    center: new GeoPoint(location.lat, location.lng),
     radius: 50, // 50 km radius
   });
   const snapshot = await query.get();
