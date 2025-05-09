@@ -6,7 +6,7 @@ import Button from '../common/Button';
 import Input from '../common/Input';
 import useGeolocation from '../../hooks/useGeolocation';
 import { BLOOD_TYPES } from '../../utils/constants';
-import '../../App.css';
+import '../App.css';
 
 const RequestBlood = () => {
   const { user } = useContext(AuthContext);
