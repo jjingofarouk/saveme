@@ -3,7 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import RecipientProfile from '../components/recipient/RecipientProfile';
 import RequestBlood from '../components/recipient/RequestBlood';
 import MatchResults from '../components/recipient/MatchResults';
-import '../../App.css';
+import '../App.css';
 
 const RecipientPage = () => {
   const { user } = useContext(AuthContext);
