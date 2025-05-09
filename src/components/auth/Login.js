@@ -1,4 +1,4 @@
-```javascript
+
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { login } from '../../services/authService';
