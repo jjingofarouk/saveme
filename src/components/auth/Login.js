@@ -5,7 +5,7 @@ import { login } from '../../services/authService';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import { validateEmail, validatePassword } from '../../utils/validators';
-import '../../App.css';
+import '../App.css';
 
 const Login = ({ onClose }) => {
   const { setUser } = useContext(AuthContext);
