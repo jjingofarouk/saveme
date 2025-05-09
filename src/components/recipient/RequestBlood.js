@@ -1,3 +1,4 @@
+
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { createBloodRequest } from '../../services/recipientService';
@@ -31,13 +32,13 @@ const RequestBlood = () => {
     try {
       await createBloodRequest({
         ...formData,
-        recipientId: user.id,
+        recipientId: user.uid,
         location,
       });
       alert('Blood request created');
       setFormData({ bloodType: '', urgency: 1, quantity: 1 });
     } catch (err) {
-      setError('Failed to create request');
+      setError(err.message || 'Failed to create request');
     }
   };
 
