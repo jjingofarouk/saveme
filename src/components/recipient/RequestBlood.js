@@ -17,6 +17,7 @@ const RequestBlood = () => {
     quantity: 1,
   });
   const [error, setError] = useState('');
+  const [retry, setRetry] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,7 +26,7 @@ const RequestBlood = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!location) {
-      setError('Location not available');
+      setError('Location not available. Please enable location services.');
       return;
     }
 
@@ -37,15 +38,28 @@ const RequestBlood = () => {
       });
       alert('Blood request created');
       setFormData({ bloodType: '', urgency: 1, quantity: 1 });
+      setError('');
     } catch (err) {
       setError(err.message || 'Failed to create request');
     }
   };
 
+  const handleRetry = () => {
+    setRetry((prev) => !prev); // Trigger geolocation retry
+    setError('');
+  };
+
   return (
     <div className="request-blood">
       <h2>Request Blood</h2>
-      {geoError && <p className="error">{geoError}</p>}
+      {geoError && (
+        <div className="error">
+          <p>{geoError}</p>
+          {geoError.includes('denied') && (
+            <Button onClick={handleRetry}>Enable Location and Retry</Button>
+          )}
+        </div>
+      )}
       {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
         <select name="bloodType" value={formData.bloodType} onChange={handleChange}>
@@ -71,7 +85,9 @@ const RequestBlood = () => {
           placeholder="Quantity (units)"
           min="1"
         />
-        <Button type="submit">Submit Request</Button>
+        <Button type="submit" disabled={!location}>
+          Submit Request
+        </Button>
       </form>
     </div>
   );
