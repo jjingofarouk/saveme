@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { forgotPassword } from '../../services/authService';
 import Button from '../common/Button';
@@ -22,10 +23,10 @@ const ForgotPassword = ({ onClose }) => {
     }
 
     try {
-      await forgotPassword({ email });
+      await forgotPassword(email);
       setSuccess('Password reset email sent');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to send reset email');
+      setError(err.message || 'Failed to send reset email');
     }
   };
 
