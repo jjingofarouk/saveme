@@ -3,7 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import AdminDashboard from '../components/admin/AdminDashboard';
 import UserManagement from '../components/admin/UserManagement';
 import Reports from '../components/admin/Reports';
-import '../../App.css';
+import '../App.css';
 
 const AdminPage = () => {
   const { user } = useContext(AuthContext);
