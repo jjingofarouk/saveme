@@ -1,4 +1,4 @@
-```javascript
+
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import useFirestore from '../../hooks/useFirestore';
