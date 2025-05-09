@@ -1,7 +1,7 @@
 
 import React from 'react';
 import useFirestore from '../../hooks/useFirestore';
-import '../../App.css';
+import '../App.css';
 
 const Reports = () => {
   const { data: reports, loading, error } = useFirestore('reports', true);
