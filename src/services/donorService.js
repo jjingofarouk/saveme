@@ -1,6 +1,6 @@
-
+import firebase from 'firebase/app';
 import { db } from './firebaseConfig';
-import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { GeoFirestore } from 'geofirestore';
 
 const geoFirestore = new GeoFirestore(db);
