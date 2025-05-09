@@ -1,6 +1,6 @@
 ```javascript
 import React from 'react';
-import { contacts } from '../../data/emergencyServices';
+import { contacts } from './EmergencyServices';
 import '../../App.css';
 
 const EmergencyServices = () => {
