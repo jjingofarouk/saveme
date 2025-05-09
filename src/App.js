@@ -1,35 +1,59 @@
 
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import { NotificationProvider } from './context/NotificationContext';
-import Navbar from './components/common/Navbar';
-import Home from './pages/Home';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import DonorPage from './pages/DonorPage';
-import RecipientPage from './pages/RecipientPage';
-import AdminPage from './pages/AdminPage';
-import NotFound from './pages/NotFound';
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
+import DonorDashboard from './components/donor/DonorDashboard';
+import RequestBlood from './components/recipient/RequestBlood';
+import UserManagement from './components/admin/UserManagement';
+import Profile from './components/common/Profile';
+import RequestStatus from './components/recipient/RequestStatus';
+import EmergencyServices from './components/common/EmergencyServices';
+import Hospitals from './components/common/Hospitals';
+import Pharmacies from './components/common/Pharmacies';
+import Login from './components/auth/Login';
+import Signup from './components/auth/Signup';
 import './App.css';
 
-const App = () => (
-  <AuthProvider>
-    <NotificationProvider>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/donor" element={<DonorPage />} />
-          <Route path="/recipient" element={<RecipientPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </NotificationProvider>
-  </AuthProvider>
-);
+const PrivateRoute = ({ component: Component, roles, ...rest }) => {
+  const { user } = useContext(AuthContext);
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        user && roles.includes(user.role) ? (
+          <Component {...props} user={user} />
+        ) : (
+          <Redirect to="/login" />
+        )
+      }
+    />
+  );
+};
+
+const App = () => {
+  const { user } = useContext(AuthContext);
+
+  return (
+    <Router>
+      <div className="app">
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+          <PrivateRoute path="/donor" component={DonorDashboard} roles={['donor']} />
+          <PrivateRoute path="/recipient" component={RequestBlood} roles={['recipient']} />
+          <PrivateRoute path="/admin" component={UserManagement} roles={['admin']} />
+          <PrivateRoute path="/profile" component={Profile} roles={['donor', 'recipient', 'admin']} />
+          <PrivateRoute path="/requests" component={RequestStatus} roles={['recipient']} />
+          <PrivateRoute path="/emergency" component={EmergencyServices} roles={['donor', 'recipient', 'admin']} />
+          <PrivateRoute path="/hospitals" component={Hospitals} roles={['donor', 'recipient', 'admin']} />
+          <PrivateRoute path="/pharmacies" component={Pharmacies} roles={['donor', 'recipient', 'admin']} />
+          <Route exact path="/">
+            {user ? <Redirect to={user.role === 'admin' ? '/admin' : user.role === 'donor' ? '/donor' : '/recipient'} /> : <Redirect to="/login" />}
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
+};
 
 export default App;
