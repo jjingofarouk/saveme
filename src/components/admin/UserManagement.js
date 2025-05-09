@@ -1,46 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { getUsers, updateUserRole, deleteUser } from '../../services/adminService';
+
+import React from 'react';
+import useFirestore from '../../hooks/useFirestore';
+import { updateUserRole, deleteUser } from '../../services/authService';
 import Button from '../common/Button';
 import '../../App.css';
 
 const UserManagement = () => {
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const data = await getUsers();
-        setUsers(data);
-      } catch (err) {
-        setError('Failed to load users');
-      }
-    };
-    fetchUsers();
-  }, []);
+  const { data: users, loading, error } = useFirestore('users', true);
+  const [updateError, setUpdateError] = useState('');
 
   const handleRoleChange = async (userId, role) => {
     try {
-      await updateUserRole(userId, { role });
-      setUsers(users.map((u) => (u.id === userId ? { ...u, role } : u)));
+      await updateUserRole(userId, role);
     } catch (err) {
-      setError('Failed to update role');
+      setUpdateError(err.message || 'Failed to update role');
     }
   };
 
   const handleDelete = async (userId) => {
     try {
       await deleteUser(userId);
-      setUsers(users.filter((u) => u.id !== userId));
     } catch (err) {
-      setError('Failed to delete user');
+      setUpdateError(err.message || 'Failed to delete user');
     }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="user-management">
       <h2>User Management</h2>
-      {error && <p className="error">{error}</p>}
+      {updateError && <p className="error">{updateError}</p>}
       <table>
         <thead>
           <tr>
