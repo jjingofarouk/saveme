@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import useFirestore from '../../hooks/useFirestore';
-import '../App.css';
+import '../../App.css';
 
 const DonationHistory = () => {
   const { user } = useContext(AuthContext);
