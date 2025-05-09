@@ -5,7 +5,7 @@ import { register } from '../../services/authService';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import { validateEmail, validatePassword, validatePhone } from '../../utils/validators';
-import '../../App.css';
+import '../App.css';
 
 const Register = ({ onClose }) => {
   const { setUser } = useContext(AuthContext);
