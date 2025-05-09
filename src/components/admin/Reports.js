@@ -1,27 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { getReports } from '../../services/adminService';
+
+import React from 'react';
+import useFirestore from '../../hooks/useFirestore';
 import '../../App.css';
 
 const Reports = () => {
-  const [reports, setReports] = useState([]);
-  const [error, setError] = useState('');
+  const { data: reports, loading, error } = useFirestore('reports', true);
 
-  useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const data = await getReports();
-        setReports(data);
-      } catch (err) {
-        setError('Failed to load reports');
-      }
-    };
-    fetchReports();
-  }, []);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="reports">
       <h2>Reports</h2>
-      {error && <p className="error">{error}</p>}
       <ul>
         {reports.map((report) => (
           <li key={report.id}>
@@ -34,3 +24,4 @@ const Reports = () => {
 };
 
 export default Reports;
+```
