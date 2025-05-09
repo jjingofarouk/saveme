@@ -26,4 +26,4 @@ isSupported().then((supported) => {
   }
 });
 
-export { auth, db, messaging, analytics };
+export { app, auth, db, messaging, analytics };
