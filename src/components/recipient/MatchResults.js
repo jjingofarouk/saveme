@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import useFirestore from '../../hooks/useFirestore';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import '../../App.css';
+import '../App.css';
 import 'leaflet/dist/leaflet.css';
 
 const MatchResults = () => {
