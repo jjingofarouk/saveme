@@ -1,43 +1,46 @@
-import React, { useState, useEffect, useContext } from 'react';
+
+import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { getRecipientProfile, updateRecipientProfile } from '../../services/recipientService';
+import { updateRecipientProfile } from '../../services/recipientService';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import useFirestore from '../../hooks/useFirestore';
 import '../../App.css';
 
 const RecipientProfile = () => {
   const { user } = useContext(AuthContext);
-  const [profile, setProfile] = useState({
+  const { data: profile, loading, error } = useFirestore(`recipients/${user.uid}`);
+  const [formData, setFormData] = useState({
     bloodType: '',
     medicalConditions: '',
   });
-  const [error, setError] = useState('');
+  const [updateError, setUpdateError] = useState('');
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const data = await getRecipientProfile(user.id);
-        setProfile(data);
-      } catch (err) {
-        setError('Failed to load profile');
-      }
-    };
-    fetchProfile();
-  }, [user.id]);
+  React.useEffect(() => {
+    if (profile) {
+      setFormData({
+        bloodType: profile.bloodType || '',
+        medicalConditions: profile.medicalConditions || '',
+      });
+    }
+  }, [profile]);
 
   const handleChange = (e) => {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateRecipientProfile(user.id, profile);
+      await updateRecipientProfile(user.uid, formData);
       alert('Profile updated');
     } catch (err) {
-      setError('Failed to update profile');
+      setUpdateError(err.message || 'Failed to update profile');
     }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="profile">
@@ -46,18 +49,18 @@ const RecipientProfile = () => {
         <Input
           type="text"
           name="bloodType"
-          value={profile.bloodType}
+          value={formData.bloodType}
           onChange={handleChange}
           placeholder="Blood Type (e.g., A+)"
         />
         <Input
           type="text"
           name="medicalConditions"
-          value={profile.medicalConditions}
+          value={formData.medicalConditions}
           onChange={handleChange}
           placeholder="Medical Conditions"
         />
-        {error && <p className="error">{error}</p>}
+        {updateError && <p className="error">{updateError}</p>}
         <Button type="submit">Update Profile</Button>
       </form>
     </div>
