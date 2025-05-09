@@ -5,7 +5,7 @@ import { updateDonorProfile } from '../../services/donorService';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import useFirestore from '../../hooks/useFirestore';
-import '../../App.css';
+import '../App.css';
 
 const DonorProfile = () => {
   const { user } = useContext(AuthContext);
