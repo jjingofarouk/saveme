@@ -1,4 +1,4 @@
-
+import firebase from 'firebase/app';
 import { db } from './firebaseConfig';
 import { doc, setDoc, addDoc, collection } from 'firebase/firestore';
 import { GeoFirestore } from 'geofirestore';
