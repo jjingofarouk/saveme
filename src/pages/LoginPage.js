@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Login from '../components/auth/Login';
 import Modal from '../components/common/Modal';
-import '../../App.css';
+import '../App.css';
 
 const LoginPage = () => {
   const [isOpen, setIsOpen] = useState(true);
