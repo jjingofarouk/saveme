@@ -1,3 +1,4 @@
+```javascript
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { login } from '../../services/authService';
@@ -26,12 +27,11 @@ const Login = ({ onClose }) => {
     }
 
     try {
-      const response = await login({ email, password });
-      setUser(response.user);
-      localStorage.setItem('token', response.token);
+      const user = await login(email, password);
+      setUser(user);
       onClose();
     } catch (err) {
-      setServerError(err.response?.data?.detail || 'Login failed');
+      setServerError(err.message || 'Login failed');
     }
   };
 
