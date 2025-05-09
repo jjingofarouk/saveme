@@ -3,7 +3,7 @@ import React from 'react';
 import useFirestore from '../../hooks/useFirestore';
 import { updateUserRole, deleteUser } from '../../services/authService';
 import Button from '../common/Button';
-import '../../App.css';
+import '../App.css';
 
 const UserManagement = () => {
   const { data: users, loading, error } = useFirestore('users', true);
