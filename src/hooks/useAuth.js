@@ -1,25 +1,29 @@
+
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { getCurrentUser } from '../services/authService';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../services/firebaseConfig';
+import { getUserProfile } from '../services/authService';
 
 const useAuth = () => {
   const { user, setUser } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem('token');
-      if (token && !user) {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
         try {
-          const data = await getCurrentUser();
-            setUser(data);
-          } catch (err) {
-            localStorage.removeItem('token');
-            setUser(null);
-          }
+          const profile = await getUserProfile(firebaseUser.uid);
+          setUser({ ...profile, uid: firebaseUser.uid });
+        } catch (err) {
+          setUser(null);
         }
-      };
-      fetchUser();
-    }, [user, setUser]);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [setUser]);
 
   return { user, setUser };
 };
