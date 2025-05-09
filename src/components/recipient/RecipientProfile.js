@@ -5,7 +5,7 @@ import { updateRecipientProfile } from '../../services/recipientService';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import useFirestore from '../../hooks/useFirestore';
-import '../../App.css';
+import '../App.css';
 
 const RecipientProfile = () => {
   const { user } = useContext(AuthContext);
