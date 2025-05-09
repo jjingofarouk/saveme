@@ -4,7 +4,7 @@ import { forgotPassword } from '../../services/authService';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import { validateEmail } from '../../utils/validators';
-import '../../App.css';
+import '../App.css';
 
 const ForgotPassword = ({ onClose }) => {
   const [email, setEmail] = useState('');
