@@ -1,45 +1,54 @@
-import React, { useState, useEffect, useContext } from 'react';
+
+import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { getDonorProfile, updateDonorProfile } from '../../services/donorService';
+import { updateDonorProfile } from '../../services/donorService';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import useFirestore from '../../hooks/useFirestore';
 import '../../App.css';
 
 const DonorProfile = () => {
   const { user } = useContext(AuthContext);
-  const [profile, setProfile] = useState({
+  const { data: profile, loading, error } = useFirestore(`donors/${user.uid}`);
+  const [formData, setFormData] = useState({
     bloodType: '',
     lastDonation: '',
     medicalHistory: '',
     availability: true,
   });
-  const [error, setError] = useState('');
+  const [updateError, setUpdateError] = useState('');
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const data = await getDonorProfile(user.id);
-        setProfile(data);
-      } catch (err) {
-        setError('Failed to load profile');
-      }
-    };
-    fetchProfile();
-  }, [user.id]);
+  React.useEffect(() => {
+    if (profile) {
+      setFormData({
+        bloodType: profile.bloodType || '',
+        lastDonation: profile.lastDonation || '',
+        medicalHistory: profile.medicalHistory || '',
+        availability: profile.availability !== undefined ? profile.availability : true,
+      });
+    }
+  }, [profile]);
 
   const handleChange = (e) => {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateDonorProfile(user.id, profile);
+      await updateDonorProfile(user.uid, formData);
       alert('Profile updated');
     } catch (err) {
-      setError('Failed to update profile');
+      setUpdateError(err.message || 'Failed to update profile');
     }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="profile">
@@ -48,21 +57,21 @@ const DonorProfile = () => {
         <Input
           type="text"
           name="bloodType"
-          value={profile.bloodType}
+          value={formData.bloodType}
           onChange={handleChange}
           placeholder="Blood Type (e.g., A+)"
         />
         <Input
           type="date"
           name="lastDonation"
-          value={profile.lastDonation}
+          value={formData.lastDonation}
           onChange={handleChange}
           placeholder="Last Donation"
         />
         <Input
           type="text"
           name="medicalHistory"
-          value={profile.medicalHistory}
+          value={formData.medicalHistory}
           onChange={handleChange}
           placeholder="Medical History"
         />
@@ -71,11 +80,11 @@ const DonorProfile = () => {
           <input
             type="checkbox"
             name="availability"
-            checked={profile.availability}
-            onChange={(e) => setProfile({ ...profile, availability: e.target.checked })}
+            checked={formData.availability}
+            onChange={handleChange}
           />
         </label>
-        {error && <p className="error">{error}</p>}
+        {updateError && <p className="error">{updateError}</p>}
         <Button type="submit">Update Profile</Button>
       </form>
     </div>
