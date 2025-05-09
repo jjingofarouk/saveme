@@ -1,7 +1,8 @@
-import firebase from 'firebase/app';
+
 import { db } from './firebaseConfig';
 import { doc, setDoc, addDoc, collection } from 'firebase/firestore';
 import { GeoFirestore } from 'geofirestore';
+import { GeoPoint } from 'firebase/firestore';
 
 const geoFirestore = new GeoFirestore(db);
 
@@ -15,7 +16,7 @@ export const createBloodRequest = async (data) => {
   const geoCollection = geoFirestore.collection('requests');
   await geoCollection.add({
     ...rest,
-    coordinates: new firebase.firestore.GeoPoint(location.lat, location.lng),
+    coordinates: new GeoPoint(location.lat, location.lng),
     createdAt: new Date().toISOString(),
   });
 };
