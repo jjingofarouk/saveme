@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { getNearbyRequests } from '../../services/donorService';
 import useGeolocation from '../../hooks/useGeolocation';
+import { getNearbyRequests } from '../../services/donorService';
 import '../../App.css';
 import 'leaflet/dist/leaflet.css';
 
@@ -17,7 +18,7 @@ const DonorDashboard = () => {
           const data = await getNearbyRequests(location);
           setRequests(data);
         } catch (err) {
-          setError('Failed to load requests');
+          setError(err.message || 'Failed to load requests');
         }
       };
       fetchRequests();
@@ -33,7 +34,7 @@ const DonorDashboard = () => {
         <MapContainer center={[location.lat, location.lng]} zoom={13} style={{ height: '400px' }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           />
           <Marker position={[location.lat, location.lng]}>
             <Popup>Your Location</Popup>
