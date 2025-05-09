@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Register from '../components/auth/Register';
 import Modal from '../components/common/Modal';
-import '../../App.css';
+import '../App.css';
 
 const RegisterPage = () => {
   const [isOpen, setIsOpen] = useState(true);
