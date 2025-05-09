@@ -1,3 +1,4 @@
+
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { register } from '../../services/authService';
@@ -35,12 +36,11 @@ const Register = ({ onClose }) => {
     }
 
     try {
-      const response = await register(formData);
-      setUser(response.user);
-      localStorage.setItem('token', response.token);
+      const user = await register(formData);
+      setUser(user);
       onClose();
     } catch (err) {
-      setServerError(err.response?.data?.detail || 'Registration failed');
+      setServerError(err.message || 'Registration failed');
     }
   };
 
