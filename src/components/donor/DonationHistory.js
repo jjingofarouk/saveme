@@ -1,29 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react';
+
+import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { getDonationHistory } from '../../services/donorService';
+import useFirestore from '../../hooks/useFirestore';
 import '../../App.css';
 
 const DonationHistory = () => {
   const { user } = useContext(AuthContext);
-  const [history, setHistory] = useState([]);
-  const [error, setError] = useState('');
+  const { data: history, loading, error } = useFirestore(`donors/${user.uid}/donations`, true);
 
-  useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const data = await getDonationHistory(user.id);
-        setHistory(data);
-      } catch (err) {
-        setError('Failed to load history');
-      }
-    };
-    fetchHistory();
-  }, [user.id]);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="history">
       <h2>Donation History</h2>
-      {error && <p className="error">{error}</p>}
       <table>
         <thead>
           <tr>
