@@ -1,6 +1,8 @@
+
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import { logout } from '../../services/authService';
 import Button from './Button';
 import '../../App.css';
 
@@ -8,8 +10,8 @@ const Navbar = () => {
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
+  const handleLogout = async () => {
+    await logout();
     setUser(null);
     navigate('/');
   };
