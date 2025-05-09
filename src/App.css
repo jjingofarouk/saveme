@@ -199,5 +199,14 @@ th, td {
   border-radius: 50%;
   margin-top: 10px;
 }
-
+.request-status ul {
+  list-style: none;
+  padding: 0;
+}
+.request-item {
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
 
