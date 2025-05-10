@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 import Navbar from './components/common/Navbar';
 import DonorDashboard from './components/donor/DonorDashboard';
@@ -14,7 +14,6 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import './App.css';
 
-// PrivateRoute using React Router v6 element pattern
 const PrivateRoute = ({ element, roles }) => {
   const { user } = useContext(AuthContext);
 
@@ -32,7 +31,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          
+
           <Route
             path="/donor"
             element={<PrivateRoute roles={['donor']} element={<DonorDashboard />} />}
@@ -65,7 +64,7 @@ const App = () => {
             path="/pharmacies"
             element={<PrivateRoute roles={['donor', 'recipient', 'admin']} element={<Pharmacies />} />}
           />
-          
+
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>
