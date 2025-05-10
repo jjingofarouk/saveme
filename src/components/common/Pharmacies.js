@@ -1,6 +1,6 @@
-```javascript
+
 import React from 'react';
-import { pharmacies } from '../../data/pharmacies';
+import { pharmacies } from './pharmacies';
 import '../../App.css';
 
 const Pharmacies = () => {
