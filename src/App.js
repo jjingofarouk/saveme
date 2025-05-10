@@ -2,6 +2,7 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
+import Navbar from './components/common/Navbar';
 import DonorDashboard from './components/donor/DonorDashboard';
 import RequestBlood from './components/recipient/RequestBlood';
 import UserManagement from './components/admin/UserManagement';
@@ -31,11 +32,10 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => {
 };
 
 const App = () => {
-  const { user } = useContext(AuthContext);
-
   return (
     <Router>
       <div className="app">
+        <Navbar />
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
@@ -48,7 +48,7 @@ const App = () => {
           <PrivateRoute path="/hospitals" component={Hospitals} roles={['donor', 'recipient', 'admin']} />
           <PrivateRoute path="/pharmacies" component={Pharmacies} roles={['donor', 'recipient', 'admin']} />
           <Route exact path="/">
-            {user ? <Redirect to={user.role === 'admin' ? '/admin' : user.role === 'donor' ? '/donor' : '/recipient'} /> : <Redirect to="/login" />}
+            <Redirect to="/login" />
           </Route>
         </Switch>
       </div>
