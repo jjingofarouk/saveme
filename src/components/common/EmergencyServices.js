@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { contacts } from './EmergencyServices';
+import { contacts } from './EmergencyContacts';
 import '../../App.css';
 
 const EmergencyServices = () => {
