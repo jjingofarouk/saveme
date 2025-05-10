@@ -1,4 +1,3 @@
-
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { createBloodRequest } from '../../services/recipientService';
@@ -10,14 +9,14 @@ import '../../App.css';
 
 const RequestBlood = () => {
   const { user } = useContext(AuthContext);
-  const { location, error: geoError } = useGeolocation();
+  const [retry, setRetry] = useState(false); // <-- Now used
+  const { location, error: geoError } = useGeolocation(retry); // <-- Now reactive to retry
   const [formData, setFormData] = useState({
     bloodType: '',
     urgency: 1,
     quantity: 1,
   });
   const [error, setError] = useState('');
-  //const [retry, setRetry] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
