@@ -1,98 +1,96 @@
 
-import React, { useState, useContext, useEffect } from 'react';
-import { AuthContext } from '../../context/AuthContext';
-import { updateDonorProfile, updateRecipientProfile } from '../../services/donorService';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import Input from './Input';
-import Button from './Button';
+import React, { useState, useEffect } from 'react';
+import { db, storage } from '../../services/firebaseConfig';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import '../../App.css';
 
-const Profile = () => {
-  const { user } = useContext(AuthContext);
-  const [formData, setFormData] = useState({
-    bloodType: '',
-    medicalHistory: '',
-    photoURL: '',
-  });
+const Profile = ({ user }) => {
+  const [profile, setProfile] = useState({ name: '', bloodType: '', photoURL: '' });
   const [file, setFile] = useState(null);
-  const [error, setError] = useState('');
-  const [eligibility, setEligibility] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Calculate donation eligibility (56 days since last donation)
-    const checkEligibility = async () => {
-      const donorDoc = await db.collection('donors').doc(user.uid).get();
-      if (donorDoc.exists) {
-        const { lastDonation } = donorDoc.data();
-        if (lastDonation) {
-          const daysSince = (Date.now() - lastDonation.toDate().getTime()) / (1000 * 60 * 60 * 24);
-          setEligibility(daysSince >= 56 ? 'Eligible' : `Eligible in ${Math.ceil(56 - daysSince)} days`);
-        } else {
-          setEligibility('Eligible');
+    const fetchProfile = async () => {
+      try {
+        const userDoc = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(userDoc);
+        if (docSnap.exists()) {
+          setProfile(docSnap.data());
         }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        setLoading(false);
       }
     };
-    if (user.role === 'donor') checkEligibility();
-  }, [user]);
+    fetchProfile();
+  }, [user.uid]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      let photoURL = formData.photoURL;
+      const userDoc = doc(db, 'users', user.uid);
+      let photoURL = profile.photoURL;
       if (file) {
-        const storage = getStorage();
-        const storageRef = ref(storage, `users/${user.uid}/profile.jpg`);
+        const storageRef = ref(storage, `profile_photos/${user.uid}`);
         await uploadBytes(storageRef, file);
         photoURL = await getDownloadURL(storageRef);
       }
-      const profileData = { ...formData, photoURL };
-      if (user.role === 'donor') {
-        await updateDonorProfile(user.uid, profileData);
-      } else {
-        await updateRecipientProfile(user.uid, profileData);
-      }
-      alert('Profile updated');
-    } catch (err) {
-      setError(err.message || 'Failed to update profile');
+      await updateDoc(userDoc, { ...profile, photoURL });
+      setLoading(false);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      setLoading(false);
     }
   };
 
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <div className="profile">
-      <h2>Update Profile</h2>
-      {error && <p className="error">{error}</p>}
-      {eligibility && <p>Donation Status: {eligibility}</p>}
-      <form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          name="bloodType"
-          value={formData.bloodType}
-          onChange={handleChange}
-          placeholder="Blood Type (e.g., A+)"
-        />
-        <Input
-          type="text"
-          name="medicalHistory"
-          value={formData.medicalHistory}
-          onChange={handleChange}
-          placeholder="Medical History"
-        />
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          aria-label="Upload profile picture"
-        />
-        {formData.photoURL && <img src={formData.photoURL} alt="Profile" className="profile-img" />}
-        <Button type="submit">Save Profile</Button>
+      <h2>Profile</h2>
+      <form onSubmit={handleUpdate}>
+        <label>
+          Name:
+          <input
+            type="text"
+            value={profile.name}
+            onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+          />
+        </label>
+        <label>
+          Blood Type:
+          <select
+            value={profile.bloodType}
+            onChange={(e) => setProfile({ ...profile, bloodType: e.target.value })}
+          >
+            <option value="">Select</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </label>
+        <label>
+          Profile Photo:
+          <input type="file" onChange={handleFileChange} />
+        </label>
+        {profile.photoURL && <img src={profile.photoURL} alt="Profile" className="profile-img" />}
+        <button type="submit" disabled={loading}>
+          {loading ? 'Updating...' : 'Update Profile'}
+        </button>
       </form>
     </div>
   );
