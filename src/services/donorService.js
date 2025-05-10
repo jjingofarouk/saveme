@@ -1,6 +1,6 @@
 import { db } from './firebaseConfig';
    import { doc, setDoc, query, collection, where, getDocs } from 'firebase/firestore';
-   import { GeoPoint } from 'firebase/firestore';
+   //import { GeoPoint } from 'firebase/firestore';
    import { geohashQueryBounds, distanceBetween } from 'geofire-common';
 
    export const updateDonorProfile = async (uid, data) => {
