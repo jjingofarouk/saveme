@@ -8,13 +8,13 @@ import '../../styles/Navbar.css';
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
-  const history = useNavigate();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      history.push('/login');
+      navigate.push('/login');
     } catch (err) {
       console.error('Logout failed:', err);
     }
