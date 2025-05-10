@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { register } from '../../services/authService';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { AlertCircle } from 'lucide-react';
 import { validateEmail, validatePassword, validatePhone } from '../../utils/validators';
-import '../../App.css';
+import '../../styles/Register.css';
 
 const Register = () => {
   const { setUser } = useContext(AuthContext);
@@ -45,40 +46,66 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-form">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <Input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Email"
-          error={errors.email}
-        />
-        <Input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder="Password"
-          error={errors.password}
-        />
-        <Input
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          placeholder="Phone (+256)"
-          error={errors.phone}
-        />
-        <select name="role" value={formData.role} onChange={handleChange}>
-          <option value="donor">Donor</option>
-          <option value="recipient">Recipient</option>
-        </select>
-        {serverError && <p className="error">{serverError}</p>}
-        <Button type="submit">Register</Button>
-      </form>
+    <div className="register-container">
+      <div className="register-form">
+        <h2>Register for BloodMatch</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <Input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              error={errors.email}
+              icon={<AlertCircle size={18} />}
+            />
+          </div>
+          <div className="input-group">
+            <Input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              error={errors.password}
+              icon={<AlertCircle size={18} />}
+            />
+          </div>
+          <div className="input-group">
+            <Input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Phone (+256)"
+              error={errors.phone}
+              icon={<AlertCircle size={18} />}
+            />
+          </div>
+          <div className="input-group">
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="role-select"
+            >
+              <option value="donor">Donor</option>
+              <option value="recipient">Recipient</option>
+            </select>
+          </div>
+          {serverError && (
+            <p className="error-message">
+              <AlertCircle size={18} className="error-icon" />
+              {serverError}
+            </p>
+          )}
+          <Button type="submit">Register</Button>
+        </form>
+        <p className="login-link">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
+      </div>
     </div>
   );
 };
