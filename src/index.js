@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { NotificationProvider } from './context/NotificationContext';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -17,6 +16,3 @@ root.render(
     </AuthProvider>
   </React.StrictMode>
 );
-
-// Register service worker for PWA functionality
-serviceWorkerRegistration.register();
