@@ -1,13 +1,8 @@
+# BloodMatch Blood Donation
 
+![BloodMatch Logo](frontend/public/android-chrome-192x192.png)
 
----
-
-
-# SaveMe Blood Donation
-
-![SaveMe Logo](frontend/public/android-chrome-192x192.png)
-
-**SaveMe** is a Firebase-based Progressive Web App (PWA) designed to connect blood donors with recipients in real-time across Uganda. By leveraging geolocation-based matching, multi-channel notifications, and comprehensive healthcare resources, SaveMe addresses the critical need for efficient blood donation systems. The app provides an intuitive, offline-capable, and responsive user experience, showcasing advanced full-stack development, geospatial technology, and user-centric design.
+**BloodMatch** is a Firebase-based Progressive Web App (PWA) designed to connect blood donors with recipients in real-time across Uganda. By leveraging geolocation-based matching, multi-channel notifications, and comprehensive healthcare resources, BloodMatch addresses the critical need for efficient blood donation systems. The app provides an intuitive, offline-capable, and responsive user experience, showcasing advanced full-stack development, geospatial technology, and user-centric design.
 
 ## Table of Contents
 - [Project Overview](#project-overview)
@@ -30,15 +25,15 @@
 
 ## Project Overview
 
-SaveMe aims to streamline blood donation in Uganda by connecting donors and recipients through a modern web platform. The app enables users to:
+BloodMatch aims to streamline blood donation in Uganda by connecting donors and recipients through a modern web platform. The app enables users to:
 - **Donors**: View nearby blood requests on an interactive map, filter by blood type, and get directions via Google Maps.
 - **Recipients**: Submit urgent blood requests with geolocation data for real-time matching.
 - **Admins**: Manage user roles and monitor platform activity via an analytics dashboard.
 - **All Users**: Access curated healthcare resources, including emergency services, hospitals, and pharmacies.
 
-Built as a PWA, SaveMe offers offline support, installability, and a native app-like experience. It integrates Firebase for authentication, Firestore for data storage, and Cloud Functions for backend logic, with GeoFire for geolocation queries and Twilio/Nodemailer for notifications.
+Built as a PWA, BloodMatch offers offline support, installability, and a native app-like experience. It integrates Firebase for authentication, Firestore for data storage, and Cloud Functions for backend logic, with GeoFire for geolocation queries and Twilio/Nodemailer for notifications.
 
-The project is deployed at [https://saveme-a3b6c.web.app/](https://saveme-a3b6c.web.app/) and open-sourced at [https://github.com/jjingofarouk/saveme](https://github.com/jjingofarouk/saveme).
+The project is deployed at [https://BloodMatch-a3b6c.web.app/](https://BloodMatch-a3b6c.web.app/) and open-sourced at [https://github.com/jjingofarouk/BloodMatch](https://github.com/jjingofarouk/BloodMatch).
 
 ## Key Features
 
@@ -91,8 +86,8 @@ Ensure you have the following installed:
 ### Setup Instructions
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/jjingofarouk/saveme.git
-   cd saveme/frontend
+   git clone https://github.com/jjingofarouk/BloodMatch.git
+   cd BloodMatch/frontend
    ```
 
 2. **Install Dependencies**:
@@ -196,7 +191,7 @@ Ensure you have the following installed:
    ```bash
    firebase deploy --only hosting
    ```
-5. Access the app at the provided Firebase Hosting URL (e.g., `https://saveme-a3b6c.web.app/`).
+5. Access the app at the provided Firebase Hosting URL (e.g., `https://BloodMatch-a3b6c.web.app/`).
 
 ### Vercel Deployment
 1. Install Vercel CLI:
@@ -220,7 +215,7 @@ Ensure you have the following installed:
 
 ## Directory Structure
 ```
-saveme/
+BloodMatch/
 ├── frontend/
 │   ├── public/
 │   │   ├── manifest.json
@@ -267,7 +262,7 @@ saveme/
 ```
 
 ## Contributing
-We welcome contributions to improve SaveMe! To contribute:
+We welcome contributions to improve BloodMatch! To contribute:
 1. Fork the repository.
 2. Create a feature branch:
    ```bash
@@ -312,34 +307,34 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - **Maintainer**: Jjingo Farouk
 - **GitHub**: [jjingofarouk](https://github.com/jjingofarouk)
 - **Email**: jjingofarouk@example.com
-- **Project Link**: [https://saveme-a3b6c.web.app/](https://saveme-a3b6c.web.app/)
+- **Project Link**: [https://BloodMatch-a3b6c.web.app/](https://BloodMatch-a3b6c.web.app/)
 
-Thank you for exploring SaveMe! Your feedback and contributions are greatly appreciated.
+Thank you for exploring BloodMatch! Your feedback and contributions are greatly appreciated.
 
 
 ---
 
 ### Integration Instructions
 1. **Add README to Repository**:
-   - Save the provided `README.md` content to the root of your `saveme` repository (`saveme/README.md`).
+   - Save the provided `README.md` content to the root of your `BloodMatch` repository (`BloodMatch/README.md`).
    - Update placeholders:
      - Replace `jjingofarouk@example.com` with your actual email.
-     - Update the `SaveMe Logo` image path if you have a different logo file.
+     - Update the `BloodMatch Logo` image path if you have a different logo file.
      - Ensure `CODE_OF_CONDUCT.md` and `LICENSE` files exist or remove references if not applicable.
 
 2. **Commit and Push**:
    ```bash
    git add README.md
-   git commit -m "Add comprehensive README for SaveMe"
+   git commit -m "Add comprehensive README for BloodMatch"
    git push origin main
    ```
 
 3. **Verify on GitHub**:
-   - Visit [https://github.com/jjingofarouk/saveme](https://github.com/jjingofarouk/saveme) to ensure the README renders correctly with proper formatting and links.
+   - Visit [https://github.com/jjingofarouk/BloodMatch](https://github.com/jjingofarouk/BloodMatch) to ensure the README renders correctly with proper formatting and links.
 
 4. **Update Portfolio**:
-   - The SaveMe project object for `projects.tsx` was provided previously (artifact ID `89efa24b-1bbd-4db7-b37a-32d2b0f36f89`). Ensure it’s integrated into your portfolio.
-   - Add screenshots to `portfolio/assets/projects-screenshots/saveme/` for `home.png`, `donor_dashboard.png`, etc., to match the README’s feature descriptions.
+   - The BloodMatch project object for `projects.tsx` was provided previously (artifact ID `89efa24b-1bbd-4db7-b37a-32d2b0f36f89`). Ensure it’s integrated into your portfolio.
+   - Add screenshots to `portfolio/assets/projects-screenshots/BloodMatch/` for `home.png`, `donor_dashboard.png`, etc., to match the README’s feature descriptions.
 
 ---
 
