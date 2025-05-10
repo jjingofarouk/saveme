@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { hospitals } from './hospitals';
+import { hospitals } from './DataHospitals';
 import '../../App.css';
 
 const Hospitals = () => {
