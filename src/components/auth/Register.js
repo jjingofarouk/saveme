@@ -1,5 +1,5 @@
-
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { register } from '../../services/authService';
 import Button from '../common/Button';
@@ -7,7 +7,7 @@ import Input from '../common/Input';
 import { validateEmail, validatePassword, validatePhone } from '../../utils/validators';
 import '../../App.css';
 
-const Register = ({ onClose }) => {
+const Register = () => {
   const { setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: '',
@@ -17,6 +17,7 @@ const Register = ({ onClose }) => {
   });
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,9 +37,8 @@ const Register = ({ onClose }) => {
     }
 
     try {
-      const user = await register(formData);
-      setUser(user);
-      onClose();
+      await register(formData);
+      navigate('/login');
     } catch (err) {
       setServerError(err.message || 'Registration failed');
     }
