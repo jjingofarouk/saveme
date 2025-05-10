@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
@@ -15,20 +14,14 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import './App.css';
 
-const PrivateRoute = ({ component: Component, roles, ...rest }) => {
+// PrivateRoute using React Router v6 element pattern
+const PrivateRoute = ({ element, roles }) => {
   const { user } = useContext(AuthContext);
-  return (
-    <Route
-      {...rest}
-      element={
-        user && roles.includes(user.role) ? (
-          <Component user={user} />
-        ) : (
-          <Navigate to="/login" replace />
-        )
-      }
-    />
-  );
+
+  if (!user) return <Navigate to="/login" replace />;
+  if (!roles.includes(user.role)) return <Navigate to="/login" replace />;
+
+  return element;
 };
 
 const App = () => {
@@ -39,14 +32,40 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <PrivateRoute path="/donor" component={DonorDashboard} roles={['donor']} />
-          <PrivateRoute path="/recipient" component={RequestBlood} roles={['recipient']} />
-          <PrivateRoute path="/admin" component={UserManagement} roles={['admin']} />
-          <PrivateRoute path="/profile" component={Profile} roles={['donor', 'recipient', 'admin']} />
-          <PrivateRoute path="/requests" component={RequestStatus} roles={['recipient']} />
-          <PrivateRoute path="/emergency" component={EmergencyServices} roles={['donor', 'recipient', 'admin']} />
-          <PrivateRoute path="/hospitals" component={Hospitals} roles={['donor', 'recipient', 'admin']} />
-          <PrivateRoute path="/pharmacies" component={Pharmacies} roles={['donor', 'recipient', 'admin']} />
+          
+          <Route
+            path="/donor"
+            element={<PrivateRoute roles={['donor']} element={<DonorDashboard />} />}
+          />
+          <Route
+            path="/recipient"
+            element={<PrivateRoute roles={['recipient']} element={<RequestBlood />} />}
+          />
+          <Route
+            path="/admin"
+            element={<PrivateRoute roles={['admin']} element={<UserManagement />} />}
+          />
+          <Route
+            path="/profile"
+            element={<PrivateRoute roles={['donor', 'recipient', 'admin']} element={<Profile />} />}
+          />
+          <Route
+            path="/requests"
+            element={<PrivateRoute roles={['recipient']} element={<RequestStatus />} />}
+          />
+          <Route
+            path="/emergency"
+            element={<PrivateRoute roles={['donor', 'recipient', 'admin']} element={<EmergencyServices />} />}
+          />
+          <Route
+            path="/hospitals"
+            element={<PrivateRoute roles={['donor', 'recipient', 'admin']} element={<Hospitals />} />}
+          />
+          <Route
+            path="/pharmacies"
+            element={<PrivateRoute roles={['donor', 'recipient', 'admin']} element={<Pharmacies />} />}
+          />
+          
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>
