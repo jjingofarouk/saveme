@@ -1,13 +1,12 @@
-
 {
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["build/**"]
-      }
+      "use": "@vercel/static-build"
     }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/" }
   ],
   "cleanUrls": true,
   "trailingSlash": false
