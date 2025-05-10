@@ -133,73 +133,73 @@ const Navbar = () => {
                   <Link to="/requests" onClick={closeMenu} className="navbar-link">
                     <ClipboardList size={20} />
                     <span>Request Status</span>
-                  </Link>
-                </li>
-              </>
-            )}
-            
-            {user && user.role === 'admin' && (
-              <li className={isActive('/admin')}>
-                <Link to="/admin" onClick={closeMenu} className="navbar-link">
-                  <User size={20} />
-                  <span>Admin</span>
                 </Link>
               </li>
-            )}
-            
-            {user && (
-              <>
-                <li className={isActive('/profile')}>
-                  <Link to="/profile" onClick={closeMenu} className="navbar-link">
-                    <User size={20} />
-                    <span>Profile</span>
-                  </Link>
-                </li>
-                <li className={isActive('/emergency')}>
-                  <Link to="/emergency" onClick={closeMenu} className="navbar-link emergency-link">
-                    <AlertTriangle size={20} />
-                    <span>Emergency</span>
-                  </Link>
-                </li>
-                <li className={isActive('/hospitals')}>
-                  <Link to="/hospitals" onClick={closeMenu} className="navbar-link">
-                    <Building2 size={20} />
-                    <span>Hospitals</span>
-                  </Link>
-                </li>
-                <li className={isActive('/pharmacies')}>
-                  <Link to="/pharmacies" onClick={closeMenu} className="navbar-link">
-                    <PlusSquare size={20} />
-                    <span>Pharmacies</span>
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
+            </>
+          )}
           
-          <div className="navbar-end">
-            {user && (
-              <div className="notification-wrapper">
-                <NotificationPanel userId={user.uid} />
-              </div>
-            )}
-            
-            {user ? (
-              <button className="navbar-button logout-button" onClick={handleLogout}>
-                <LogOut size={20} />
-                <span className="button-text">Logout</span>
-              </button>
-            ) : (
-              <Link to="/login" onClick={closeMenu} className="navbar-button login-button">
-                <LogIn size={20} />
-                <span className="button-text">Login</span>
+          {user && user.role === 'admin' && (
+            <li className={isActive('/admin')}>
+              <Link to="/admin" onClick={closeMenu} className="navbar-link">
+                <User size={20} />
+                <span>Admin</span>
               </Link>
-            )}
-          </div>
+            </li>
+          )}
+          
+          {user && (
+            <>
+              <li className={isActive('/profile')}>
+                <Link to="/profile" onClick={closeMenu} className="navbar-link">
+                  <User size={20} />
+                  <span>Profile</span>
+                </Link>
+              </li>
+              <li className={isActive('/emergency')}>
+                <Link to="/emergency" onClick={closeMenu} className="navbar-link emergency-link">
+                  <AlertTriangle size={20} />
+                  <span>Emergency</span>
+                </Link>
+              </li>
+              <li className={isActive('/hospitals')}>
+                <Link to="/hospitals" onClick={closeMenu} className="navbar-link">
+                  <Building2 size={20} />
+                  <span>Hospitals</span>
+                </Link>
+              </li>
+              <li className={isActive('/pharmacies')}>
+                <Link to="/pharmacies" onClick={closeMenu} className="navbar-link">
+                  <PlusSquare size={20} />
+                  <span>Pharmacies</span>
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+        
+        <div className="navbar-end">
+          {user && (
+            <div className="notification-wrapper">
+              <NotificationPanel userId={user.uid} />
+            </div>
+          )}
+          
+          {user ? (
+            <button className="navbar-button logout-button" onClick={handleLogout}>
+              <LogOut size={20} />
+              <span className="button-text">Logout</span>
+            </button>
+          ) : (
+            <Link to="/login" onClick={closeMenu} className="navbar-button login-button">
+              <LogIn size={20} />
+              <span className="button-text">Login</span>
+            </Link>
+          )}
         </div>
       </div>
-    </nav>
-  );
+    </div>
+  </nav>
+);
 };
 
 export default Navbar;
