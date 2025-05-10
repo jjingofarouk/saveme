@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import useGeolocation from '../../hooks/useGeolocation';
@@ -7,16 +6,17 @@ import { getNearbyRequests } from '../../services/donorService';
 import Button from '../common/Button';
 import NotificationPanel from '../common/NotificationPanel';
 import { BLOOD_TYPES } from '../../utils/constants';
+import { AuthContext } from '../../context/AuthContext';
 import '../../App.css';
 import 'leaflet/dist/leaflet.css';
 
-const DonorDashboard = ({ user }) => {
+const DonorDashboard = () => {
+  const { user } = useContext(AuthContext); // get user from context
   const { location, error: geoError } = useGeolocation();
   const [requests, setRequests] = useState([]);
   const [error, setError] = useState('');
   const [retry, setRetry] = useState(false);
   const [bloodTypeFilter, setBloodTypeFilter] = useState('');
-  //const [showDirections, setShowDirections] = useState(null);
 
   useEffect(() => {
     if (location) {
@@ -47,6 +47,8 @@ const DonorDashboard = ({ user }) => {
     const url = `https://www.google.com/maps/dir/?api=1&origin=${location.lat},${location.lng}&destination=${reqLocation.lat},${reqLocation.lng}`;
     window.open(url, '_blank');
   };
+
+  if (!user) return <p>Loading user...</p>; // safeguard against null user
 
   return (
     <div className="dashboard">
