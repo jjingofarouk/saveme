@@ -1,69 +1,60 @@
 
 import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import useFirestore from '../../hooks/useFirestore';
-import { updateUserRole, deleteUser } from '../../services/authService';
-import Button from '../common/Button';
 import { db } from '../../services/firebaseConfig';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import '../../App.css';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
 const UserManagement = () => {
-  const { data: users, loading, error } = useFirestore('users', true);
-  const [updateError, setUpdateError] = useState('');
-  const [stats, setStats] = useState({ users: 0, requests: 0, donations: 0 });
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, 'stats', 'global'), (doc) => {
-      if (doc.exists()) setStats(doc.data());
-    });
-    return () => unsub();
+    const fetchUsers = async () => {
+      try {
+        const usersCollection = collection(db, 'users');
+        const usersSnapshot = await getDocs(usersCollection);
+        const usersList = usersSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(usersList);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        setLoading(false);
+      }
+    };
+    fetchUsers();
   }, []);
 
-  const handleRoleChange = async (userId, role) => {
+  const handleRoleChange = async (userId, newRole) => {
     try {
-      await updateUserRole(userId, role);
-    } catch (err) {
-      setUpdateError(err.message || 'Failed to update role');
+      const userRef = doc(db, 'users', userId);
+      await updateDoc(userRef, { role: newRole });
+      setUsers(users.map((user) => (user.id === userId ? { ...user, role: newRole } : user)));
+    } catch (error) {
+      console.error('Error updating role:', error);
     }
   };
 
-  const handleDelete = async (userId) => {
+  const handleDeleteUser = async (userId) => {
     try {
-      await deleteUser(userId);
-    } catch (err) {
-      setUpdateError(err.message || 'Failed to delete user');
+      await deleteDoc(doc(db, 'users', userId));
+      setUsers(users.filter((user) => user.id !== userId));
+    } catch (error) {
+      console.error('Error deleting user:', error);
     }
   };
 
-  const chartData = {
-    labels: ['Users', 'Requests', 'Donations'],
-    datasets: [
-      {
-        label: 'Platform Stats',
-        data: [stats.users, stats.requests, stats.donations],
-        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56'],
-      },
-    ],
-  };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="error">{error}</p>;
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="user-management">
       <h2>User Management</h2>
-      {updateError && <p className="error">{updateError}</p>}
-      <div className="analytics">
-        <h3>Platform Analytics</h3>
-        <Bar data={chartData} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} />
-      </div>
       <table>
         <thead>
           <tr>
+            <th>Name</th>
             <th>Email</th>
             <th>Role</th>
             <th>Actions</th>
@@ -72,20 +63,20 @@ const UserManagement = () => {
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <td>{user.email}</td>
-              <td>
+              <td data-label="Name">{user.name}</td>
+              <td data-label="Email">{user.email}</td>
+              <td data-label="Role">
                 <select
                   value={user.role}
                   onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                  aria-label={`Change role for ${user.email}`}
                 >
                   <option value="donor">Donor</option>
                   <option value="recipient">Recipient</option>
                   <option value="admin">Admin</option>
                 </select>
               </td>
-              <td>
-                <Button onClick={() => handleDelete(user.id)}>Delete</Button>
+              <td data-label="Actions">
+                <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
               </td>
             </tr>
           ))}
