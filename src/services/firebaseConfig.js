@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getMessaging, isSupported } from 'firebase/messaging';
 import { getAnalytics } from 'firebase/analytics';
+import { getStorage } from 'firebase/storage'; // <-- ADD THIS LINE
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -17,6 +18,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app); // <-- ADD THIS LINE
 const analytics = getAnalytics(app);
 let messaging = null;
 
@@ -26,4 +28,4 @@ isSupported().then((supported) => {
   }
 });
 
-export { app, auth, db, messaging, analytics };
+export { app, auth, db, storage, messaging, analytics }; // <-- EXPORT storage
