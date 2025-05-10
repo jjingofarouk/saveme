@@ -12,7 +12,7 @@ import EmergencyServices from './components/common/EmergencyServices';
 import Hospitals from './components/common/Hospitals';
 import Pharmacies from './components/common/Pharmacies';
 import Login from './components/auth/Login';
-import Signup from './components/auth/Signup';
+import Register from './components/auth/Register';
 import './App.css';
 
 const PrivateRoute = ({ component: Component, roles, ...rest }) => {
@@ -38,7 +38,7 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
+          <Route path="/register" component={Register} />
           <PrivateRoute path="/donor" component={DonorDashboard} roles={['donor']} />
           <PrivateRoute path="/recipient" component={RequestBlood} roles={['recipient']} />
           <PrivateRoute path="/admin" component={UserManagement} roles={['admin']} />
