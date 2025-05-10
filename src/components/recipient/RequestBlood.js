@@ -17,7 +17,7 @@ const RequestBlood = () => {
     quantity: 1,
   });
   const [error, setError] = useState('');
-  const [retry, setRetry] = useState(false);
+  //const [retry, setRetry] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
