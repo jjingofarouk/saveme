@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { pharmacies } from './datapharmacies';
+import { pharmacies } from './DataPharmacies';
 import '../../App.css';
 
 const Pharmacies = () => {
