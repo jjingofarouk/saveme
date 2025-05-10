@@ -1,6 +1,6 @@
 
 import React, { useContext, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { auth } from '../../services/firebaseConfig';
 import NotificationPanel from './NotificationPanel';
@@ -8,7 +8,7 @@ import '../../styles/Navbar.css';
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
-  const history = useHistory();
+  const history = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
