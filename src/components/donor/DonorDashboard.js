@@ -16,7 +16,7 @@ const DonorDashboard = ({ user }) => {
   const [error, setError] = useState('');
   const [retry, setRetry] = useState(false);
   const [bloodTypeFilter, setBloodTypeFilter] = useState('');
-  const [showDirections, setShowDirections] = useState(null);
+  //const [showDirections, setShowDirections] = useState(null);
 
   useEffect(() => {
     if (location) {
