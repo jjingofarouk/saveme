@@ -1,4 +1,4 @@
-```javascript
+
 import React from 'react';
 import { contacts } from './EmergencyServices';
 import '../../App.css';
