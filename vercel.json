@@ -7,7 +7,5 @@
   ],
   "routes": [
     { "src": "/(.*)", "dest": "/" }
-  ],
-  "cleanUrls": true,
-  "trailingSlash": false
+  ]
 }
