@@ -1,7 +1,6 @@
 import React from 'react';
-import { AlertCircle } from 'lucide-react';
 
-const Input = ({ type, name, value, onChange, placeholder, error, icon }) => (
+const Input = ({ type, name, value, onChange, placeholder, error }) => (
   <>
     <style>
       {`
@@ -49,11 +48,6 @@ const Input = ({ type, name, value, onChange, placeholder, error, icon }) => (
           text-align: left;
         }
 
-        .error-icon {
-          color: #C62828;
-          flex-shrink: 0;
-        }
-
         /* Responsive Design */
         @media (max-width: 480px) {
           .input {
@@ -82,12 +76,7 @@ const Input = ({ type, name, value, onChange, placeholder, error, icon }) => (
         placeholder={placeholder}
         className={error ? 'input error' : 'input'}
       />
-      {error && (
-        <span className="error-text">
-          {icon && <span className="error-icon">{icon}</span>}
-          {error}
-        </span>
-      )}
+      {error && <span className="error-text">{error}</span>}
     </div>
   </>
 );
