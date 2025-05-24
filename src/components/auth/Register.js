@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../services/authService';
 import Button from '../common/Button';
 import Input from '../common/Input';
@@ -9,7 +8,7 @@ import { validateEmail, validatePassword, validatePhone } from '../../utils/vali
 import '../../styles/Register.css';
 
 const Register = () => {
-  const { setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -18,7 +17,6 @@ const Register = () => {
   });
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
